@@ -13,6 +13,10 @@ import '../src/style/_main.scss';
 //it will have it's own state, and manage the state of a form's inputs
 
 class PokemonForm extends React.Component {
+
+  //the constructor will make a PokemonForm instance with a property of
+  //it becomes this.props.pokeName
+  //this.state.pokeName
   constructor(props) {
     super(props);
     this.state = {
@@ -68,6 +72,7 @@ class App extends React.Component {
       pokemonLookup: {},
       pokemonSelected: null,
       pokemonNameError: '',
+      pokemonPic: null,
     }
 
     this.pokemonSelect = this.pokemonSelect.bind(this);
@@ -110,7 +115,10 @@ class App extends React.Component {
       superagent.get(this.state.pokemonLookup[name])
         .then(res => {
           console.log(res.body, '-----resbody');
-          this.setState({ pokemonSelected: name })
+          this.setState({
+            pokemonSelected: name,
+            pokemonPic: res.body.sprites.front_shiny,
+          })
           console.log(this.state)
         })
         .catch(console.error(err))
@@ -125,7 +133,17 @@ class App extends React.Component {
     return (
       <div>
         <PokemonForm pokemonSelect={ this.pokemonSelect }/>
-        <p> pokemon name error: { this.state.pokemonNameError } </p>
+        { this.state.pokemonNameError ?
+         <div>
+          <h2> pokemon { this.state.pokemonNameError } does not exist </h2>
+          <p> make another request! </p>
+          <p> pokemon name error: { this.state.pokemonNameError } </p>
+         </div> :
+         <div>
+           <h2> pokemon selected: { this.state.pokemonSelected } </h2>
+           <img src={ this.state.pokemonPic } />
+         </div>
+        }
       </div>
     )
   }
