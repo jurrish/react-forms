@@ -48,7 +48,7 @@ class PokemonForm extends React.Component {
       //we create controlled inputs by binding "value" to a state property
       //and providing an onChange event handler to the input
       //we are using one way data binding
-      <form
+      <form className='parent-div'
         onSubmit={this.handleSubmit} >
         <input
           type='text'
@@ -118,6 +118,7 @@ class App extends React.Component {
           this.setState({
             pokemonSelected: name,
             pokemonPic: res.body.sprites.front_shiny,
+            pokemonNameError: null,
           })
           console.log(this.state)
         })
